@@ -118,10 +118,12 @@ Ensure you have the following installed on your machine before starting:
 
       ```properties
       server.port=8081
-      pulsar.issuer-url={your-keycloak-url}
-      pulsar.credentials-url={your-credentials.json-file-path}
-      pulsar.audience={your-audience}
       spring.pulsar.client.service-url={your-pulsar-url}
+      spring.pulsar.client.authentication.plugin-class-name=org.apache.pulsar.client.impl.auth.oauth2.AuthenticationOAuth2
+      spring.pulsar.client.authentication.param.issuerUrl=http://{your keyclock url}/realms/{your keyclock realm}
+      spring.pulsar.client.authentication.param.privateKey={your-credentials.json-file-path}
+      spring.pulsar.client.authentication.param.audience={your-audience}
+
       ```
 
     - Replace the placeholders `{your-keycloak-url}`, `{your-credentials.json-file-path}`, `{your-audience}`, and
