@@ -21,7 +21,6 @@ Ensure you have the following installed on your machine before starting:
 
 - [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/install/)
 - [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-- [Apache Pulsar](https://pulsar.apache.org/)
 - An IDE like [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](https://www.eclipse.org/ide/)
 
 ## Keycloak Setup
