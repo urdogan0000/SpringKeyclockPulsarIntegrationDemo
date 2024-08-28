@@ -1,8 +1,8 @@
 # Pulsar-Keycloak-SpringBoot Integration
 
-This repository provides a step-by-step guide to integrating Apache Pulsar with Keycloak for authentication and
-authorization within a Spring Boot application. By following this guide, you will set up a secure messaging platform
-that leverages OAuth2 for managing access and identities.
+This repository provides a comprehensive guide to integrating Apache Pulsar with Keycloak for authentication and
+authorization in a Spring Boot application. By following this guide, you will establish a secure messaging platform that
+uses OAuth2 for managing access and identities.
 
 ## Table of Contents
 
@@ -13,15 +13,16 @@ that leverages OAuth2 for managing access and identities.
 - [Obtaining Keycloak Configuration Details](#obtaining-keycloak-configuration-details)
 - [Running the Application](#running-the-application)
 - [Sample Endpoints](#sample-endpoints)
+- [Conclusion](#conclusion)
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed on your machine:
+Ensure you have the following installed on your machine before starting:
 
-- Docker and Docker Compose
-- Java Development Kit (JDK)
-- Maven
-- Apache Pulsar
+- [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/install/)
+- [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- [Apache Pulsar](https://pulsar.apache.org/)
+- An IDE like [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](https://www.eclipse.org/ide/)
 
 ## Keycloak Setup
 
@@ -41,13 +42,13 @@ Before you begin, ensure you have the following installed on your machine:
     - The default admin credentials are:
         - **Username**: `admin`
         - **Password**: `password`
-    - You can log in with these credentials and proceed to configure realms, clients, and users as needed.
+    - Log in with these credentials to configure realms, clients, and users as needed.
 
 ## Apache Pulsar Setup
 
-1. **Configuration of Pulsar Broker:**
+1. **Configure the Pulsar Broker:**
     - Navigate to the `pulsar_installation` folder.
-    - Open the `customer-broker.conf` file and make the following changes:
+    - Open the `customer-broker.conf` file and update the following settings:
 
       ```properties
       authenticationEnabled=true
@@ -62,8 +63,8 @@ Before you begin, ensure you have the following installed on your machine:
       tokenPublicKey=file:///pulsar/conf/public_key.der
       ```
 
-    - Replace the placeholders `{your-keycloak-url}`, `{your-realm-name}`, and `{your-audience}` with your specific
-      Keycloak configuration details.
+    - Replace `{your-keycloak-url}`, `{your-realm-name}`, and `{your-audience}` with your specific Keycloak
+      configuration details.
 
 2. **Configure OAuth2 for Pulsar:**
     - Open the `oauth2.json` file in the `pulsar_installation` folder.
@@ -151,12 +152,9 @@ To correctly configure your application, you need to obtain several Keycloak-spe
 
 ## Running the Application
 
-1. **Build and Run the Spring Boot Application:**
-    - Use Maven to build and run the application:
-
-      ```bash
-      mvn spring-boot:run
-      ```
+1. **Run the Spring Boot Application:**
+    - Use your IDE (e.g., IntelliJ IDEA, Eclipse) to run the application.
+    - Ensure the application is configured to run on port `8081`.
 
 2. **Access the Application:**
     - The application will be running on `http://localhost:8081`.
