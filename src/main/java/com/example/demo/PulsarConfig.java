@@ -2,6 +2,8 @@ package com.example.demo;
 
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.impl.auth.oauth2.AuthenticationFactoryOAuth2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class PulsarConfig {
-
+    private static final Logger logger = LoggerFactory.getLogger(PulsarConfig.class);
     @Value("${pulsar.issuer-url}")
     private String issuerUrlString;
 
@@ -31,7 +33,7 @@ public class PulsarConfig {
         URL issuerUrl = new URL(issuerUrlString);
         URL credentialsUrl = new URL(credentialsUrlString);
 
-        System.out.println("PulsarClient initializing...");
+        logger.info("PulsarClient initializing...");
 
         // Build Pulsar Client with OAuth2 Authentication
         return PulsarClient.builder()

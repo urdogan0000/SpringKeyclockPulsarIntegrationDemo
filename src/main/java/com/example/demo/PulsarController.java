@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pulsar")
 public class PulsarController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PulsarController.class);
     private final PulsarProducer pulsarProducer;
     private final PulsarListenerManager pulsarListenerManager;
 
@@ -19,13 +22,14 @@ public class PulsarController {
     @GetMapping("/send")
     public void sendMessage() {
         try {
-            System.out.println("Sending message");
+            logger.info("Sending message");
             MyMessageTest myMessage = new MyMessageTest();
             myMessage.setId("test");
             myMessage.setContent("test");
 
             pulsarProducer.sendMessage("topic-asd", myMessage);
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
 
@@ -36,6 +40,7 @@ public class PulsarController {
         try {
             pulsarListenerManager.removeListeners();
         } catch (Exception e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
 
@@ -46,6 +51,7 @@ public class PulsarController {
         try {
             pulsarListenerManager.addListeners();
         } catch (Exception e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
 
