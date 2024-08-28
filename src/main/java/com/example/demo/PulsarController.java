@@ -23,13 +23,13 @@ public class PulsarController {
             MyMessageTest myMessage = new MyMessageTest();
             myMessage.setId("test");
             myMessage.setContent("test");
+
             pulsarProducer.sendMessage("topic-asd", myMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-
 
     @GetMapping("/stop")
     public void stopPulsarListener() {

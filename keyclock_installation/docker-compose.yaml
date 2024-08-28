@@ -1,0 +1,41 @@
+version: '3.6'
+
+services:
+  keycloak_web:
+    image: quay.io/keycloak/keycloak:25.0.4
+    container_name: keycloak_web
+    environment:
+      KEYCLOAK_DB: postgres
+      KEYCLOAK_DB_URL: jdbc:postgresql://keycloakdb:5432/keycloak
+      KEYCLOAK_DB_USERNAME: keycloak
+      KEYCLOAK_DB_PASSWORD: keycloak
+
+      KEYCLOAK_HOSTNAME: localhost
+      KEYCLOAK_HOSTNAME_PORT: 8090
+      KEYCLOAK_HOSTNAME_STRICT: 'false'
+      KEYCLOAK_HOSTNAME_STRICT_HTTPS: 'false'
+
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+
+      KEYCLOAK_LOG_LEVEL: info
+      KEYCLOAK_METRICS_ENABLED: 'true'
+      KEYCLOAK_HEALTH_ENABLED: 'true'
+    command: start-dev
+    depends_on:
+      - keycloakdb
+    ports:
+      - '8090:8080'
+
+  keycloakdb:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+
+volumes:
+  postgres_data:
+

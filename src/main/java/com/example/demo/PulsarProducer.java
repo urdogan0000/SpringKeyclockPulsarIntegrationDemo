@@ -1,38 +1,39 @@
 package com.example.demo;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.pulsar.client.api.*;
+
+import org.apache.pulsar.client.api.CompressionType;
+import org.apache.pulsar.client.api.Producer;
+import org.apache.pulsar.client.api.PulsarClient;
+import org.apache.pulsar.client.api.PulsarClientException;
+import org.apache.pulsar.client.impl.schema.JSONSchema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PulsarProducer {
-
+    private static final Logger logger = LoggerFactory.getLogger(PulsarProducer.class);
     private final PulsarClient pulsarClient;
-    private final ObjectMapper objectMapper;
+
 
     public PulsarProducer(PulsarClient pulsarClient) {
         this.pulsarClient = pulsarClient;
-        this.objectMapper = new ObjectMapper();
 
     }
 
-    public <T> void sendMessage(String topic, T message) throws PulsarClientException, JsonProcessingException {
-        // Create a producer with a byte schema
-        System.out.println("Sending message: " + message);
+    public <T> void sendMessage(String topic, T message) throws PulsarClientException {
 
-        try (Producer<byte[]> producer = pulsarClient.newProducer(Schema.BYTES)
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) message.getClass();
+
+        try (Producer<T> producer = pulsarClient.newProducer(JSONSchema.of(clazz))
                 .topic(topic)
                 .compressionType(CompressionType.ZSTD)
-
                 .create()) {
 
-            // Convert the message to JSON bytes
-            byte[] jsonBytes = objectMapper.writeValueAsBytes(message);
-
             // Send the message
-            producer.send(jsonBytes);
-            System.out.println("Message sent to topic: " + topic + " with value: " + message);
+            producer.send(message);
+            logger.info("Message sent to topic: %s with value: %s".formatted(topic, message));
         }
     }
 }
