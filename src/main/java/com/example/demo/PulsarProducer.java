@@ -1,39 +1,26 @@
 package com.example.demo;
 
-
-import org.apache.pulsar.client.api.CompressionType;
-import org.apache.pulsar.client.api.Producer;
-import org.apache.pulsar.client.api.PulsarClient;
-import org.apache.pulsar.client.api.PulsarClientException;
-import org.apache.pulsar.client.impl.schema.JSONSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.pulsar.reactive.core.ReactivePulsarTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class PulsarProducer {
+
     private static final Logger logger = LoggerFactory.getLogger(PulsarProducer.class);
-    private final PulsarClient pulsarClient;
 
+    private final ReactivePulsarTemplate<Object> pulsarTemplate;
 
-    public PulsarProducer(PulsarClient pulsarClient) {
-        this.pulsarClient = pulsarClient;
-
+    public PulsarProducer(ReactivePulsarTemplate<Object> pulsarTemplate) {
+        this.pulsarTemplate = pulsarTemplate;
     }
 
-    public <T> void sendMessage(String topic, T message) throws PulsarClientException {
-
-        @SuppressWarnings("unchecked")
-        Class<T> clazz = (Class<T>) message.getClass();
-
-        try (Producer<T> producer = pulsarClient.newProducer(JSONSchema.of(clazz))
-                .topic(topic)
-                .compressionType(CompressionType.ZSTD)
-                .create()) {
-
-            // Send the message
-            producer.send(message);
-            logger.info("Message sent to topic: %s with value: %s".formatted(topic, message));
-        }
+    public <T> Mono<Void> sendMessage(String topic, T message) {
+        return pulsarTemplate.send(topic, message)
+                .doOnSuccess(aVoid -> logger.info("Message sent to topic: {} with value: {}", topic, message))
+                .doOnError(e -> logger.error("Failed to send message to topic: {} with value: {}", topic, message, e))
+                .then();
     }
 }

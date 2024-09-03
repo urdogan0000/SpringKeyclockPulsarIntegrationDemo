@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/pulsar")
@@ -20,20 +21,15 @@ public class PulsarController {
     }
 
     @GetMapping("/send")
-    public void sendMessage() {
-        try {
-            logger.info("Sending message");
-            MyMessageTest myMessage = new MyMessageTest();
-            myMessage.setId("test");
-            myMessage.setContent("test");
+    public Mono<Void> sendMessage() {
+        logger.info("Sending message");
+        MyMessageTest myMessage = new MyMessageTest();
+        myMessage.setId("test");
+        myMessage.setContent("test");
 
-            pulsarProducer.sendMessage("topic-asd", myMessage);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            e.printStackTrace();
-        }
-
+        return pulsarProducer.sendMessage("test", myMessage);
     }
+
 
     @GetMapping("/stop")
     public void stopPulsarListener() {
