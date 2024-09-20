@@ -21,7 +21,10 @@ public class PulsarConfig {
 
         return PulsarClient.builder()
                 .serviceUrl("pulsar://172.16.102.12:6650")
-                .authentication(new AuthenticationBasicAuth("haydarTest", "haydar123"))
+                .authentication(new AuthenticationBasicAuth("ahenk04", "95ce64b2-69a9-3c4e-8e2e-ab244acfdd99"))
+                .connectionTimeout(5, java.util.concurrent.TimeUnit.SECONDS) // Set connection timeout to 5 seconds
+                .operationTimeout(5, java.util.concurrent.TimeUnit.SECONDS) // Set operation timeout to 5 seconds
+                .maxNumberOfRejectedRequestPerConnection(3) //
                 .build();
     }
 }
