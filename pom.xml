@@ -41,12 +41,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-
         <dependency>
-            <groupId>org.apache.pulsar</groupId>
-            <artifactId>pulsar-client-all</artifactId>
-            <version>3.2.3</version>
+            <groupId>com.liderahenkpulsar</groupId>
+            <artifactId>liderahenkpulsar.auth</artifactId>
+            <version>1.0</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
